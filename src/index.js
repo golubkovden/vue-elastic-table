@@ -1,12 +1,25 @@
-import ElasticTable from './components/Table.vue'
+import Table from './components/Table.vue'
 
-export default {
-    installed: false,
-    install(Vue) {
-        if (this.installed) return
+function install(Vue) {
+    if (install.installed) return
 
-        this.installed = true
+    install.installed = true
 
-        Vue.component('VueElasticTable', ElasticTable)
-    },
+    Vue.component('VueElasticTable', Table)
+}
+
+const plugin = {
+    install,
+}
+
+let _Vue = null
+
+if (typeof window !== 'undefined') {
+    _Vue = window.Vue
+} else if (typeof global !== 'undefined') {
+    _Vue = global.Vue
+}
+
+if (_Vue) {
+    _Vue.use(plugin)
 }

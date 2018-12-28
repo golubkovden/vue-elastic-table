@@ -1,22 +1,31 @@
-import path from 'path'
 import vue from 'rollup-plugin-vue'
 import buble from 'rollup-plugin-buble'
 
-export default {
-    input: 'src/index.js',
-    output: {
-        file: path.resolve(__dirname, '../dist/vue-elastic-table.esm.js'),
-        name: 'VueElasticTable',
-        format: 'es',
-        interop: false,
+export default [
+    {
+        input: 'src/components/Table.vue',
+        output: {
+            file: 'dist/vue-elastic-table.esm.js',
+            format: 'esm',
+        },
+        plugins: [
+            vue(),
+            buble({
+                objectAssign: 'Object.assign',
+            }),
+        ],
     },
-    plugins: [
-        vue({
-            css: false,
-            compileTemplate: true,
-        }),
-        buble({
-            objectAssign: 'Object.assign',
-        }),
-    ],
-}
+    {
+        input: 'src/index.js',
+        output: {
+            file: 'dist/vue-elastic-table.js',
+            format: 'iife',
+        },
+        plugins: [
+            vue(),
+            buble({
+                objectAssign: 'Object.assign',
+            }),
+        ],
+    },
+]

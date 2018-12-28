@@ -123,7 +123,3 @@
         },
     }
 </script>
-
-<style scoped>
-
-</style>
