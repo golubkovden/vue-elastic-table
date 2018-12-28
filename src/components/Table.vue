@@ -6,10 +6,10 @@
                 <component :is="column.title"
                            v-if="isObject(column.title)"
                            v-bind="column.attributes"
-                           :class="[{sortable: column.sortable}, sorted[typeof column.sortable === 'string' ? column.sortable : column.key]]"
+                           :class="columnClasses(column)"
                            @click="onColumnClick(column)"/>
                 <th v-else v-bind="column.attributes"
-                    :class="[{sortable: column.sortable}, sorted[typeof column.sortable === 'string' ? column.sortable : column.key]]"
+                    :class="columnClasses(column)"
                     @click="onColumnClick(column)">
                     {{ column.title || column.key }}
                 </th>
@@ -38,7 +38,7 @@
 </template>
 
 <script>
-    import {get, decompose, leaves, updateSorting} from '../helpers'
+    import {get, decompose, leaves, updateSorting, sortBy} from '../helpers'
 
     export default {
         props: {
@@ -91,9 +91,9 @@
             isObject(value) {
                 return value !== null && typeof value === 'object'
             },
-            onColumnClick({key, sortable = false}) {
-                if (sortable) {
-                    const field = typeof sortable == 'string' ? sortable : key
+            onColumnClick(column) {
+                if (column.sortable) {
+                    const field = sortBy(column)
 
                     const direction = this.sorted.hasOwnProperty(field)
                         ? this.sorted[field] === 'desc' ? 'asc' : null
@@ -103,6 +103,12 @@
 
                     this.$emit('sort:changed', this.sorted)
                 }
+            },
+            columnClasses(column) {
+                return [
+                    {sortable: column.sortable},
+                    this.sorted[sortBy(column)],
+                ]
             },
         },
         watch: {

@@ -99,9 +99,12 @@ const updateSorting = (object, key, direction, multiple = false) => {
         : result
 }
 
+const sortBy = ({key, sortable}) => typeof sortable == 'string' ? sortable : key
+
 export {
     get,
     leaves,
     decompose,
     updateSorting,
+    sortBy
 }

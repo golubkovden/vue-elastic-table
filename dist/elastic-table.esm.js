@@ -109,6 +109,13 @@ var updateSorting = function (object, key, direction, multiple) {
         : result
 };
 
+var sortBy = function (ref) {
+    var key = ref.key;
+    var sortable = ref.sortable;
+
+    return typeof sortable == 'string' ? sortable : key;
+};
+
 //
 
 var script = {
@@ -162,12 +169,9 @@ var script = {
         isObject: function isObject(value) {
             return value !== null && typeof value === 'object'
         },
-        onColumnClick: function onColumnClick(ref) {
-            var key = ref.key;
-            var sortable = ref.sortable; if ( sortable === void 0 ) sortable = false;
-
-            if (sortable) {
-                var field = typeof sortable == 'string' ? sortable : key;
+        onColumnClick: function onColumnClick(column) {
+            if (column.sortable) {
+                var field = sortBy(column);
 
                 var direction = this.sorted.hasOwnProperty(field)
                     ? this.sorted[field] === 'desc' ? 'asc' : null
@@ -177,6 +181,11 @@ var script = {
 
                 this.$emit('sort:changed', this.sorted);
             }
+        },
+        columnClasses: function columnClasses(column) {
+            return [
+                {sortable: column.sortable},
+                this.sorted[sortBy(column)] ]
         },
     },
     watch: {
@@ -213,14 +222,7 @@ var __vue_render__ = function() {
                       _vm._b(
                         {
                           tag: "component",
-                          class: [
-                            { sortable: column.sortable },
-                            _vm.sorted[
-                              typeof column.sortable === "string"
-                                ? column.sortable
-                                : column.key
-                            ]
-                          ],
+                          class: _vm.columnClasses(column),
                           on: {
                             click: function($event) {
                               _vm.onColumnClick(column);
@@ -236,14 +238,7 @@ var __vue_render__ = function() {
                       "th",
                       _vm._b(
                         {
-                          class: [
-                            { sortable: column.sortable },
-                            _vm.sorted[
-                              typeof column.sortable === "string"
-                                ? column.sortable
-                                : column.key
-                            ]
-                          ],
+                          class: _vm.columnClasses(column),
                           on: {
                             click: function($event) {
                               _vm.onColumnClick(column);
@@ -320,7 +315,7 @@ __vue_render__._withStripped = true;
   /* style */
   var __vue_inject_styles__ = undefined;
   /* scoped */
-  var __vue_scope_id__ = "data-v-5d6a538b";
+  var __vue_scope_id__ = "data-v-263b7919";
   /* module identifier */
   var __vue_module_identifier__ = undefined;
   /* functional template */
