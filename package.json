@@ -1,6 +1,6 @@
 {
   "name": "vue-elastic-table",
-  "version": "0.1.5",
+  "version": "0.1.6",
   "description": "Vue table component",
   "module": "dist/vue-elastic-table.esm.js",
   "scripts": {

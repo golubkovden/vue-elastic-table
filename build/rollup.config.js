@@ -5,7 +5,7 @@ import buble from 'rollup-plugin-buble'
 export default {
     input: 'src/index.js',
     output: {
-        file: path.resolve(__dirname, '../dist/elastic-table.esm.js'),
+        file: path.resolve(__dirname, '../dist/vue-elastic-table.esm.js'),
         name: 'VueElasticTable',
         format: 'es',
         interop: false,
